@@ -14,9 +14,13 @@ GettingTxT::GettingTxT(String pathTo){
     //
     //- Get lines
     //  ---------
-        _file.open(files[i]);
-        while ( this->createArticleFiles() ){ }
-        _file.close();
+        if( files[i].size() > 5){
+            std::cout << pathTo + "/" +files[i] << std::endl; 
+            _file.open(pathTo + "/" +files[i]);
+            //this->createArticleFiles();
+            while ( this->createArticleFiles() ){ }
+            _file.close();
+        }
     }
 }
 
@@ -124,6 +128,9 @@ bool GettingTxT::createArticleFiles(){
     // Busca la cabecera de la forma:
     // <doc id="32436" title="Ampolla" nonfiltered="4884" processed="4830" dbindex="14995">
     if( getline(_file,line) ){
+
+        //std::cout << line << std::endl;
+
         found = line.find("<doc id=");
         if( found != 0){
             return this->getArticles();

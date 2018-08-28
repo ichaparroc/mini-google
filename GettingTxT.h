@@ -24,6 +24,7 @@ public:
     GettingTxT(){}
     GettingTxT(String pathTo);
     
+    
         
     //~GettingTxT();
 };
