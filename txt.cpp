@@ -16,9 +16,6 @@ void TxT::add(String &text){
 }
 
 
-
-
-
 /*
  * Purge Numbers
  * -------------
@@ -27,7 +24,7 @@ void TxT::add(String &text){
  */ 
 void TxT::purgeNumbers(){
     String *txt;
-    int i,c;
+    uint i,c;
 
     for(i=0; i<_w.size(); ++i){
         c = 0;
@@ -74,7 +71,7 @@ void TxT::purgeNumbers(){
 void TxT::purgeSpecialCharacters(){
     String *txt;
     char _char;
-    int i,c;
+    uint i,c;
 
     for(i=0; i<_w.size(); ++i){
         c = 0;
@@ -131,7 +128,7 @@ void TxT::purgeSpecialCharacters(){
  */
 void TxT::purgeUppercase(){
     String *txt;
-    int i,c;
+    uint i,c;
 
     for(i=0; i<_w.size(); ++i){
         c = 0;
@@ -162,7 +159,7 @@ void TxT::purgeBadWords(){
  */
 void TxT::purgeLittleWords(){
     String *txt;
-    int i;
+    uint i;
 
     for(i=0; i<_w.size(); ++i){
         txt = &_w[i].text;

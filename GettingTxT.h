@@ -18,13 +18,14 @@ private:
     bool getArticles();
     bool isEndOfArticle( std::string &line );
 
+    bool createArticleFiles();
+    
 public:
-    GettingTxT(std::string pathTo);
+    GettingTxT(){}
+    GettingTxT(String pathTo);
+    
+        
     //~GettingTxT();
-
-    /* data */
 };
-
-
 
 #endif // GETTINGTXT_H

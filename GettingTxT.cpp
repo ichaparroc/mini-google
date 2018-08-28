@@ -3,20 +3,19 @@
 /*
  * Constructors
  */
-GettingTxT::GettingTxT(std::string pathTo){
+GettingTxT::GettingTxT(String pathTo){
     std::vector<std::string> files;
     std::string line;
-    bool endOfFile = false;
 
     getdir(pathTo,files);
 
     // Loop for files
-    for(int i=0; i<files.size(); ++i){
+    for(uint i=0; i<files.size(); ++i){
     //
     //- Get lines
     //  ---------
         _file.open(files[i]);
-        while ( this->getArticles() ){ }
+        while ( this->createArticleFiles() ){ }
         _file.close();
     }
 }
@@ -90,6 +89,7 @@ bool GettingTxT::getArticles(){
     return isgood;
 }
 
+
 /*
  * Is the end of article?
  * ----------------------
@@ -105,4 +105,56 @@ bool GettingTxT::isEndOfArticle( std::string &line ){
     }
     }
     return false;
+}
+
+
+/*
+ * Create Article Files
+ * --------------------
+ */
+bool GettingTxT::createArticleFiles(){
+    std::string line,word,
+                id,title;
+    std::size_t found, _endID,_startTitle,_endTitle;
+
+    //
+    // Title
+    // =====
+
+    // Busca la cabecera de la forma:
+    // <doc id="32436" title="Ampolla" nonfiltered="4884" processed="4830" dbindex="14995">
+    if( getline(_file,line) ){
+        found = line.find("<doc id=");
+        if( found != 0){
+            return this->getArticles();
+        }
+    }
+    else return false;
+    _endID      = line.find("\"",9,1); // Ultima comilla
+    _startTitle = line.find("title=") + 7;
+    _endTitle   = line.find("\"",_startTitle+1,1);
+
+    // Get id
+    id = line.substr(9,_endID-9);
+
+    // Get title
+    title = line.substr(_startTitle,_endTitle-_startTitle);
+
+    // Create file
+    std::ofstream outfile ("database/"+id+".txt");
+    outfile << title << std::endl;
+
+    //
+    // Content
+    // =======
+    bool isgood = false;
+
+    // Line per line
+    while( !isEndOfArticle( line ) ){
+        isgood = true;
+        if( line.size()>0 ) outfile << line << std::endl;
+    }
+
+    outfile.close();
+    return isgood;
 }
