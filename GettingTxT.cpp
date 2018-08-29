@@ -98,7 +98,7 @@ bool GettingTxT::getArticles(){
     TxT article( std::stoi( _id ), _url );
 
     // Word per word (title)
-    std::istringstream iss(line);
+    std::istringstream iss(title);
     while (std::getline(iss, word,' ')){
         article.add(word,true);
     }
@@ -118,6 +118,9 @@ bool GettingTxT::getArticles(){
             article.add(word);
         }
     }
+
+    article.runPurge    ();
+    article.analyzeWords();
 
     // Add to vector
     _articles.push_back( article );

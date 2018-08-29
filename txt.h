@@ -2,6 +2,7 @@
 #define TXT_H
 
 #include "includes.h"
+#include "utils.h"
 
 class TxT
 {
@@ -31,6 +32,9 @@ public:
 
     // Purge
     void runPurge();
+
+    // Analize words
+    void analyzeWords();
     
     // Getting
     Words  getWords     (){ return _w;        }

@@ -72,9 +72,10 @@ void TxT::purgeNumbers(){
  *   - char([123-128])
  */
 void TxT::purgeSpecialCharacters(){
-    String *txt;
-    char _char;
-    uint i,c;
+    std::vector<uint> bad;
+    String           *txt;
+    char            _char;
+    uint              i,c;
 
     for(i=0; i<_w.size(); ++i){
         c = 0;
@@ -114,11 +115,22 @@ void TxT::purgeSpecialCharacters(){
 
                 // Bad :c
                 else{
-                    _w[i]._bad = true;
-                    _blacklist.push_back(i);
+                    bad.push_back(c);
+                    //_w[i]._bad = true;
+                    //_blacklist.push_back(i);
                 }
             }
             ++c;
+        }
+
+        // If there are bad boys
+        if( bad.size() != 0 ){
+            for(uint j=0; j<bad.size(); ++j){
+                _w[i].text.erase (_w[i].text.begin() + bad[j] - j);
+            }
+
+            // Clear
+            bad.clear();
         }
     }
 }
@@ -182,10 +194,12 @@ void TxT::purgeLittleWords(){
  */
 void TxT::runPurge(){
     // Purge!! D:
-    this->purgeLittleWords      ();
     this->purgeSpecialCharacters();
+    this->purgeLittleWords      ();
     this->purgeBadWords         ();
     this->purgeUppercase        ();
+    _w;
+
 
     // Sorting blacklist
     std::sort (_blacklist.begin(), _blacklist.end());
@@ -197,4 +211,61 @@ void TxT::runPurge(){
     }
 
     _blacklist.clear();
+}
+
+
+/*
+ * Analyze words
+ * -------------
+ */
+void TxT::analyzeWords(){
+    /*
+    Bucket words(26*10);    // 26 palabras de hasta 10 letras
+    uint index;
+    String *t;
+    for( unsigned i=0; i<_w.size(); ++i){
+        t = &_w[i].text;
+        if (t->size() < 11){
+            index = (t->at(0) -97)*t->size();
+        }else{
+            index = ((uint)t->at(0) -97)*10;
+        }
+        words[index];
+    }
+    */
+   /*
+    Dict wordList;
+    String *t;
+    for( unsigned i=0; i<_w.size(); ++i){
+        t = &_w[i].text;
+        if( isKeyOfMap(t[0],wordList) ){
+            wordList[t[0]]++;
+        }else{
+            wordList[t[0]]=1;
+        }
+    }
+    */
+    Words    __w;
+    String *word;
+    uint      id;
+
+    double coeff = 1/( (double)this->getSize() );
+
+    for( unsigned i=0; i<_w.size(); ++i ){
+        word = &_w[i].text;
+        id = findWord(__w,word);
+
+        // No esta en la nueva lista
+        if( id == __w.size() ){
+            _w[i].value += coeff;
+            __w.push_back(_w[i]);
+
+        // Se encuenta en la nueva lista
+        }else{
+            _w[id].value += coeff;
+        }
+    }
+
+    // Update
+    _w = __w;
 }
