@@ -9,22 +9,42 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+
+#include <codecvt>
+#include <cassert>
+#include <stdio.h>
+#include <wchar.h>
+#include <stdlib.h>
+#include <locale>
 #include <sstream>
+
+/*
+#include<boost/array.hpp
+#include <boost/nowide/fstream.hpp>
+#include <boost/nowide/cout.hpp>
+using boost::nowide::ifstream; 
+using boost::nowide::cout;
+*/
 #include <algorithm>
 #include <iterator>
 #include <vector>
+#include <map>
 
 typedef unsigned int uint;
 typedef std::string  String;
 
 struct Word{
-    String text;
-    bool    key;
-    bool   _bad=false;
-
-    Word(String _txt, bool _key): text(_txt), key(_key){}
+    String  text;
+    double value = 0;
+    bool         key;
+    
+    Word(String _txt, bool _key): text(_txt), key(_key){
+        if(_key) value = 1.0;
+    }
 };
 
-typedef std::vector<Word> Words;
+typedef std::vector<Word>      Words;
+typedef std::map<String,double> Dict;
+typedef std::vector<Dict>     Bucket;
 
 #endif // INCLUDES_H

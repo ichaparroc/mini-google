@@ -1,6 +1,5 @@
 #include "utils.h"
 
-
 int getdir ( String dir, std::vector<std::string> &files ){
     DIR *dp;
     struct dirent *dirp;
@@ -49,4 +48,10 @@ uint findWord(Words &_words, String *_word){
         }
      }
      return _words.size();
+}
+
+void removeCharsFromString( String &str, String &charsToRemove ){
+    for ( unsigned int i = 0; i < charsToRemove.size(); ++i ) {
+      str.erase( remove(str.begin(), str.end(), charsToRemove[i]), str.end() );
+   }
 }

@@ -1,9 +1,15 @@
 #include "GettingTxT.h"
+String SpecialCharacters = ",;.():_-+*";
 
 /*
  * Constructors
  */
 GettingTxT::GettingTxT(String pathTo): _pathTo(pathTo){
+    //setlocale(LC_ALL, "");
+    /*
+    _file.imbue( std::locale( _file.getloc(), 
+                 new std::codecvt_utf8_utf16< wchar_t, 1114111UL, std::consume_header> ) );
+                 */
 }
 
 
@@ -14,6 +20,8 @@ GettingTxT::GettingTxT(String pathTo): _pathTo(pathTo){
 void GettingTxT::createFiles(){
     std::vector<std::string> files;
     std::string line;
+
+    //setlocale(LC_ALL, "");
 
     getdir(_pathTo,files);
 
@@ -39,6 +47,8 @@ void GettingTxT::createFiles(){
 void GettingTxT::analyzeArticles(){
     std::vector<std::string> files;
     std::string line;
+
+    //setlocale(LC_ALL, "");
 
     getdir(_pathTo,files);
 
@@ -111,6 +121,9 @@ bool GettingTxT::getArticles(){
     // Line per line
     while( !isEndOfArticle( line ) ){
         isgood = true;
+
+        // Clean Special characters
+        removeCharsFromString(line,SpecialCharacters);
 
         // Word per word (content)
         std::istringstream iss(line);
