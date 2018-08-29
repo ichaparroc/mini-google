@@ -9,5 +9,5 @@ build: main.cpp
 run:
 	./out
 
-clean:
+clear:
 	rm -rf out

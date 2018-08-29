@@ -233,7 +233,8 @@ void TxT::analyzeWords(){
     String *word;
     uint      id;
 
-    double coeff = 1/( (double)this->getSize() );
+    _size = this->getSize();
+    double coeff = 1/( (double)_size );
 
     for( unsigned i=0; i<_w.size(); ++i ){
         word = &_w[i].text;

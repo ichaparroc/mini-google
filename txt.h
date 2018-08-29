@@ -20,6 +20,9 @@ private:
     void purgeBadWords         ();
     void purgeLittleWords      ();
 
+    // Analyze
+    uint _size = 0;
+
 public:
     // Constructors
     TxT();
@@ -35,12 +38,13 @@ public:
 
     // Analize words
     void analyzeWords();
-    
+
     // Getting
     Words  getWords     (){ return _w;        }
     uint   getDocumentID(){ return _idDoc;    }
     String getWebAddress(){ return _link;     }
-    uint   getSize      (){ return _w.size(); }
+    uint   getSize      (){ if(_size == 0) return _w.size(); 
+                            else           return   _size  ;}
 };
 
 #endif // TXT_H

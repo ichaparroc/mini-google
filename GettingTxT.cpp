@@ -210,3 +210,71 @@ bool GettingTxT::createArticleFiles(){
     outfile.close();
     return isgood;
 }
+
+/*
+ * Feed Radix Trie
+ * --------------------
+ */
+/*
+void GettingTxT::feedTrie( radix_trie_node &tree ){
+    uint  id;
+    Words _w;
+    
+    for(unsigned a = 0; a < _articles.size(); ++a){
+        _w = _articles[a].getWords();
+        id = _articles[a].getDocumentID();
+
+        for( unsigned i = 0; i< _articles[i].getSize(); ++i)
+            tree.insert( _w[i].text, id, (float)_w[i].value);
+    }
+
+}
+*/
+
+
+/*
+ * Create histogram
+ * --------------------
+ */
+void GettingTxT::histogram(){
+    std::vector<String> wordList;
+    std::vector< uint > wordCount;
+    std::vector<String>::iterator it;
+    uint sizeArticle;
+    uint         idx;
+    Words         _w;  
+
+    for ( unsigned a=0; a<_articles.size(); ++a){
+        sizeArticle = _articles[a].getSize();
+        _w          = _articles[a].getWords();
+
+        for( unsigned i=0; i<_w.size(); ++i){
+            it = find (wordList.begin(), wordList.end(), _w[i].text);
+
+            // Palabra nueva
+            if(it == wordList.end()){
+                wordList .push_back( _w[i].text );
+                wordCount.push_back( (uint)(_w[i].value * (double)sizeArticle) ); 
+            }
+            // No es palabra nueva: Actualizar!
+            else{
+                idx = it - wordList.begin();
+                wordCount[idx] += (uint)(_w[i].value * (double)sizeArticle);
+            }
+        }
+    }
+
+    std::ofstream myfile ("histoWords.txt");
+    if (myfile.is_open()){
+        
+        for( unsigned i=0; i<wordList.size(); ++i){
+             myfile << wordList [i] << "\t";
+             myfile << wordCount[i] << "\n";
+        }
+        myfile.close();
+    }
+    else std::cout << "Unable to open file" << std::endl;
+
+}
+
+

@@ -24,17 +24,6 @@ bool isKeyOfMap(String &key, Dict &_map){
 }
 
 uint findWord(Words &_words, String *_word){
-    /*
-    for (auto& it : _words) {
-        if( it.text.size() == _word->size() ){
-            if( it.text.at(0) == _word->at(0) ){
-            if( it.text == _word[0] ){
-                
-            }
-            }
-        }
-    }
-    */
     String *t;
     uint i;
     for (i=0; i<_words.size(); ++i) {

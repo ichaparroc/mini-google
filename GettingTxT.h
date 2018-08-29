@@ -4,6 +4,7 @@
 #include "includes.h"
 #include "utils.h"
 #include "txt.h"
+//#include "radix_trie_node.h"
 
 class GettingTxT
 {
@@ -25,10 +26,16 @@ public:
     GettingTxT(){}
     GettingTxT(String pathTo);
     
+    // Basic
     void createFiles();
     void analyzeArticles();
-        
-    //~GettingTxT();
+
+    // To trie
+    //void feedTrie( radix_trie_node &tree );
+    
+    // Histogram
+    void histogram();
+
 };
 
 #endif // GETTINGTXT_H

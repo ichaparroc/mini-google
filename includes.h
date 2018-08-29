@@ -36,9 +36,8 @@ typedef std::string  String;
 struct Word{
     String  text;
     double value = 0;
-    bool         key;
     
-    Word(String _txt, bool _key): text(_txt), key(_key){
+    Word(String _txt, bool _key): text(_txt){
         if(_key) value = 1.0;
     }
 };
