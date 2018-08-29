@@ -18,11 +18,11 @@ typedef unsigned int uint;
 typedef std::string  String;
 
 struct Word{
-    String      text;
-    uint       index;
-    bool  _bad=false;
+    String text;
+    bool    key;
+    bool   _bad=false;
 
-    Word(String _txt, uint _id): text(_txt), index(_id){}
+    Word(String _txt, bool _key): text(_txt), key(_key){}
 };
 
 typedef std::vector<Word> Words;

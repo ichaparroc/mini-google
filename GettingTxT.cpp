@@ -3,11 +3,19 @@
 /*
  * Constructors
  */
-GettingTxT::GettingTxT(String pathTo){
+GettingTxT::GettingTxT(String pathTo): _pathTo(pathTo){
+}
+
+
+/*
+ * Get Articles
+ * ------------
+ */
+void GettingTxT::createFiles(){
     std::vector<std::string> files;
     std::string line;
 
-    getdir(pathTo,files);
+    getdir(_pathTo,files);
 
     // Loop for files
     for(uint i=0; i<files.size(); ++i){
@@ -15,10 +23,34 @@ GettingTxT::GettingTxT(String pathTo){
     //- Get lines
     //  ---------
         if( files[i].size() > 5){
-            std::cout << pathTo + "/" +files[i] << std::endl; 
-            _file.open(pathTo + "/" +files[i]);
-            //this->createArticleFiles();
+            std::cout << _pathTo + "/" +files[i] << std::endl; 
+            _file.open(_pathTo + "/" +files[i]);
             while ( this->createArticleFiles() ){ }
+            _file.close();
+        }
+    }
+}
+
+
+/*
+ * Get Articles
+ * ------------
+ */
+void GettingTxT::analyzeArticles(){
+    std::vector<std::string> files;
+    std::string line;
+
+    getdir(_pathTo,files);
+
+    // Loop for files
+    for(uint i=0; i<files.size(); ++i){
+    //
+    //- Get lines
+    //  ---------
+        if( files[i].size() > 5){
+            std::cout << _pathTo + "/" +files[i] << std::endl; 
+            _file.open(_pathTo + "/" +files[i]);
+            while ( this->getArticles() ){ }
             _file.close();
         }
     }
@@ -68,7 +100,7 @@ bool GettingTxT::getArticles(){
     // Word per word (title)
     std::istringstream iss(line);
     while (std::getline(iss, word,' ')){
-        article.add(word);
+        article.add(word,true);
     }
 
     //
@@ -128,9 +160,6 @@ bool GettingTxT::createArticleFiles(){
     // Busca la cabecera de la forma:
     // <doc id="32436" title="Ampolla" nonfiltered="4884" processed="4830" dbindex="14995">
     if( getline(_file,line) ){
-
-        //std::cout << line << std::endl;
-
         found = line.find("<doc id=");
         if( found != 0){
             return this->getArticles();

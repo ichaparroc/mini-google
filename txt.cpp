@@ -11,8 +11,8 @@ TxT::TxT(uint idDocument, String WebAddress): _idDoc(idDocument), _link(WebAddre
  * Add text
  * --------
  */
-void TxT::add(String &text){
-    _w.push_back( Word( text,(uint)_w.size() ) );
+void TxT::add(String &text, bool istitle){
+    _w.push_back( Word( text, istitle ));
 }
 
 
@@ -32,7 +32,10 @@ void TxT::purgeNumbers(){
         while( c < txt->size() && !_w[i]._bad ){
             // Is number?
             if(  txt->at(c) < 58   ){
-                if(  txt->at(c) > 47   ) _w[i]._bad = true;
+                if(  txt->at(c) > 47   ){
+                    _w[i]._bad = true;
+                    _blacklist.push_back(i);
+                } 
             }
             ++c;
         }
@@ -110,8 +113,10 @@ void TxT::purgeSpecialCharacters(){
                     txt->at(c) = 'n';
 
                 // Bad :c
-                else
+                else{
                     _w[i]._bad = true;
+                    _blacklist.push_back(i);
+                }
             }
             ++c;
         }
@@ -163,7 +168,10 @@ void TxT::purgeLittleWords(){
 
     for(i=0; i<_w.size(); ++i){
         txt = &_w[i].text;
-        if( txt->size()<3 ) _w[i]._bad = true;
+        if( txt->size()<3 ){
+            _w[i]._bad = true;
+            _blacklist.push_back(i);
+        } 
     }
 }
 
@@ -173,5 +181,20 @@ void TxT::purgeLittleWords(){
  * ---------
  */
 void TxT::runPurge(){
-    
+    // Purge!! D:
+    this->purgeLittleWords      ();
+    this->purgeSpecialCharacters();
+    this->purgeBadWords         ();
+    this->purgeUppercase        ();
+
+    // Sorting blacklist
+    std::sort (_blacklist.begin(), _blacklist.end());
+
+    // Execute purge D:!
+    for( unsigned i=0; i<_blacklist.size(); ++i){
+        auto idx = _w.begin() + _blacklist[i] - i;
+        _w.erase( idx );
+    }
+
+    _blacklist.clear();
 }

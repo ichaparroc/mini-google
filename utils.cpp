@@ -2,8 +2,7 @@
 
 #include "utils.h"
 
-int getdir ( String dir, std::vector<std::string> &files )
-{
+int getdir ( String dir, std::vector<std::string> &files ){
     DIR *dp;
     struct dirent *dirp;
     if((dp  = opendir(dir.c_str())) == NULL) {

@@ -10,10 +10,11 @@ class GettingTxT
 private:
     // Parameters
     std::vector<TxT> _articles;
+    String _pathTo;
 
     // Temporal
     std::ifstream _file;
-    std::string _url, _id;
+    String _url, _id;
 
     bool getArticles();
     bool isEndOfArticle( std::string &line );
@@ -24,7 +25,8 @@ public:
     GettingTxT(){}
     GettingTxT(String pathTo);
     
-    
+    void createFiles();
+    void analyzeArticles();
         
     //~GettingTxT();
 };
