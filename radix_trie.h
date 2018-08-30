@@ -200,28 +200,49 @@ radix_trie_index *AND_results(vector<radix_trie_index*> &result_vector)
 {
 	if(result_vector.size()>1)	
 	{	
-		int max=0;	
+		int min=0;
+		
 		radix_trie_index *result = new radix_trie_index;
-		for(unsigned int i=0 ; i < result_vector.size() ; ++i)
-			if(result_vector[i]->elements > max)
-				max=result_vector[i]->elements;
-		for(int i=0 ; i < max ; ++i)
+		radix_trie_index *aux;
+		
+		for(unsigned int i=1 ; i < result_vector.size() ; ++i)
+			if(result_vector[i]->elements < result_vector[min]->elements)
+				min=i;
+		
+		aux=result_vector[0];
+		result_vector[0]=result_vector[min];
+		result_vector[min]=aux;
+
+		for(int i=0 ; i < result_vector[0]->elements ; ++i) // I=recorre elementos minimos
 		{
-			bool match=1;
-			int current_id_file=result_vector[0]->id_file[i];
-			float sum_relevance=result_vector[0]->relevance[i];
-			for(unsigned int j=1 ; j < result_vector.size(); ++j)
+			bool match1=1;
+			float sum_relevance=0;
+			for(unsigned int j=1 ; j < result_vector.size(); ++j) // J=recorre vectores
 			{
-				sum_relevance+=result_vector[j]->relevance[i];
-				if(result_vector[j]->id_file[i] != current_id_file)
-				{					
-					match=0;
+				bool match2=1;				
+				for(unsigned int k=0 ; k < result_vector[j]->elements ; k++) // K=recorre posiciones en el vector
+				{
+					if(result_vector[j]->id_file[k] < result_vector[0]->id_file[i]) {}
+					else if(result_vector[j]->id_file[k] > result_vector[0]->id_file[i])
+					{
+						match2=0;
+						break;
+					}
+					else //igual
+					{
+						sum_relevance+=result_vector[j]->relevance[k];
+						break;
+					}	
+				}
+				if(match2 == 0)
+				{
+					match1 == 0;
 					break;
-				}				
+				}	
 			}
-			if(match==1)
+			if(match1 == 1)
 			{
-				result->insert(current_id_file,sum_relevance);
+				result->insert(result_vector[0]->id_file[i],sum_relevance);
 			}
 		}
 		if(result->elements == 0)
