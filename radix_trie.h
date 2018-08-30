@@ -212,6 +212,8 @@ radix_trie_index *AND_results(vector<radix_trie_index*> &result_vector)
 		aux=result_vector[0];
 		result_vector[0]=result_vector[min];
 		result_vector[min]=aux;
+		
+		vector<int> bases(result_vector.size(),0);
 
 		for(int i=0 ; i < result_vector[0]->elements ; ++i) // I=recorre elementos minimos
 		{
@@ -220,16 +222,18 @@ radix_trie_index *AND_results(vector<radix_trie_index*> &result_vector)
 			for(unsigned int j=1 ; j < result_vector.size(); ++j) // J=recorre vectores
 			{
 				bool match2=1;				
-				for(unsigned int k=0 ; k < result_vector[j]->elements ; k++) // K=recorre posiciones en el vector
+				for(int k=bases[j] ; k < result_vector[j]->elements ; k++) // K=recorre posiciones en el vector
 				{
 					if(result_vector[j]->id_file[k] < result_vector[0]->id_file[i]) {}
 					else if(result_vector[j]->id_file[k] > result_vector[0]->id_file[i])
 					{
+						bases[j]=k;
 						match2=0;
 						break;
 					}
 					else //igual
 					{
+						bases[j]=k+1;
 						sum_relevance+=result_vector[j]->relevance[k];
 						break;
 					}	
