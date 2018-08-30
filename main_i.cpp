@@ -85,6 +85,9 @@ int main(void)
 		result_index->print_radix_trie_index();
 	else
 		cout<<"no se han encontrados resultados";
+	cout<<endl;
+	for(unsigned int i=0;i < master->words.size(); ++i)
+		cout<<master->words[i]<<" ";
 	
 	return 0;
 }
