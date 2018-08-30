@@ -251,7 +251,7 @@ void GettingTxT::feedTrie( String pathTo ){
  * --------------------
  */
 void GettingTxT::histogram(){
-    std::vector<String> wordList;
+    std::vector<String> wordList ;
     std::vector< uint > wordCount;
     std::vector<String>::iterator it;
     uint sizeArt;
@@ -289,25 +289,19 @@ void GettingTxT::histogram(){
         }
     }
     
-    // Zip the vectors together
-    std::vector< std::pair<String,uint> > zipped;
-    zip(wordList, wordCount, zipped);
-    /*
-    // Sort the vector of pairs
-    std::sort(std::begin(zipped), std::end(zipped), [&](const auto& a, const auto& b){
-                                                        return a.second > b.second;
-                                                    });
+    std::vector<std::size_t> index_vec;
+    for (std::size_t i = 0; i != wordList.size(); ++i) { index_vec.push_back(i); }
 
-    // Write the sorted pairs back to the original vectors
-    unzip(zipped, wordList, wordCount);
-    */
+    std::sort(index_vec.begin(), index_vec.end(),
+              [&](std::size_t a, std::size_t b) { return wordCount[a] < wordCount[b]; });
+
     // Save
     std::ofstream myfile ("histoWords.txt");
     if (myfile.is_open()){
         
-        for( unsigned i=0; i<wordList.size(); ++i){
-             myfile << wordList [i] << "\t";
-             myfile << wordCount[i] << "\n";
+        for( unsigned i=0; i<index_vec.size(); ++i){
+             myfile << wordList [index_vec[i]] << "\t";
+             myfile << wordCount[index_vec[i]] << "\n";
         }
         myfile.close();
     }

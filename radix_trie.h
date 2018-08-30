@@ -216,7 +216,7 @@ radix_trie_index *AND_results(vector<radix_trie_index*> &result_vector)
 		for(int i=0 ; i < result_vector[0]->elements ; ++i) // I=recorre elementos minimos
 		{
 			bool match1=1;
-			float sum_relevance=0;
+			float sum_relevance=result_vector[0]->relevance[i];
 			for(unsigned int j=1 ; j < result_vector.size(); ++j) // J=recorre vectores
 			{
 				bool match2=1;				
@@ -236,7 +236,7 @@ radix_trie_index *AND_results(vector<radix_trie_index*> &result_vector)
 				}
 				if(match2 == 0)
 				{
-					match1 == 0;
+					match1 = 0;
 					break;
 				}	
 			}

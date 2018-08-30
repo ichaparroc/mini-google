@@ -47,7 +47,7 @@ void removeCharsFromString( String &str, String &charsToRemove ){
    }
 }
 
-
+/*
 template <typename A, typename B>
 void zip(const std::vector<A> &a, const std::vector<B> &b, 
                std::vector<std::pair<A,B>> &zipped){
@@ -65,3 +65,4 @@ void unzip(const std::vector<std::pair<A, B>> &zipped,
         b[i] = zipped[i].second;
     }
 }
+*/

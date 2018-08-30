@@ -26,8 +26,7 @@ int main(void)
 	int i = 0;
 
 	file.open("foodForTrie.txt");
-	while ( getline(file,line) && i<1000000 ){
-
+	while ( getline(file,line) && i<45940166 ){
 		istringstream iss(line);
 		getline(iss, word,'\t');
         palabra = word;
@@ -36,9 +35,8 @@ int main(void)
 		getline(iss, word,'\t');
 		value = stof(word);
 
-		//if( i%100000 == 0) 
-		cout << ++i << endl ;
-
+		if( i%1000000 == 0) cout << i << endl ;
+		++i;
 		master->insert(palabra,id,value);
 	}
 	file.close();
@@ -58,33 +56,35 @@ int main(void)
 	//master->print_radix_trie_node();
 
 	vector<string> query;
-	double start_time = omp_get_wtime();
+	
 	query.push_back("iglesia");
 	query.push_back("nieves");
-	double _time = omp_get_wtime() - start_time;
+	query.push_back("parroquia");
+	
 
-    std::cout << "Tiempo de ejecucion: " << _time << std::endl; 
-
+	
 	vector<radix_trie_index*> result_vector;
 	radix_trie_index *result_index;
 
-	for(unsigned int i = 0; i < query.size(); i++)
-	{
+	double start_time = omp_get_wtime();
+	for(unsigned int i = 0; i < query.size(); i++){
 		result_index=master->search(query[i]);
-		if(result_index!=NULL)
-		{
-			result_index->print_radix_trie_index();
+		if(result_index!=NULL){
+			//result_index->print_radix_trie_index();
 			result_vector.push_back(result_index);
 		}
 	}
 
 	result_index=AND_results(result_vector);
+	double _time = omp_get_wtime() - start_time;
+
+    std::cout << "Tiempo de ejecucion: " << _time << std::endl; 
 
 	cout<<endl<<"---"<<endl;
 	if(result_index!=NULL)
 		result_index->print_radix_trie_index();
 	else
 		cout<<"no se han encontrados resultados";
-
+	
 	return 0;
 }
