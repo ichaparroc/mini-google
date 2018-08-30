@@ -32,7 +32,8 @@ public:
 
     // To trie
     //void feedTrie( radix_trie_node &tree );
-    
+    void feedTrie( String pathTo );
+
     // Histogram
     void histogram();
 

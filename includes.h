@@ -18,13 +18,7 @@
 #include <locale>
 #include <sstream>
 
-/*
-#include<boost/array.hpp
-#include <boost/nowide/fstream.hpp>
-#include <boost/nowide/cout.hpp>
-using boost::nowide::ifstream; 
-using boost::nowide::cout;
-*/
+#include <math.h> 
 #include <algorithm>
 #include <iterator>
 #include <vector>

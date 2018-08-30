@@ -74,7 +74,7 @@ void TxT::purgeNumbers(){
  * 
  */
 void TxT::purgeSpecialCharacters(){
-    //std::vector<uint> bad;
+    std::vector<uint> bad;
     String           *txt;
     char            _char;
     uint              i,c;
@@ -86,9 +86,9 @@ void TxT::purgeSpecialCharacters(){
             _char = txt->at(c);
 
             // Is Special Characters?
-            if( 47<_char && _char< 58 &&
-                64<_char && _char< 91 &&
-                96<_char && _char<123  ){
+            if( (47<_char && _char< 58) ||
+                (64<_char && _char< 91) ||
+                (96<_char && _char<123)  ){
                 // Es bueno
             }else{
                 // a: char([131-134,142,143,160])
@@ -128,15 +128,14 @@ void TxT::purgeSpecialCharacters(){
 
                 // Bad :c
                 else{
-                    //bad.push_back(c);
-                    //_blacklist.push_back(i);
+                    bad.push_back(c);
                 }
             }
             ++c;
         }
-        /*
+        
         // If there are bad boys
-        if( bad.size() != 0 ){
+        if( bad.size() > 0 ){
             for(uint j=0; j<bad.size(); ++j){
                 _w[i].text.erase (_w[i].text.begin() + bad[j] - j);
             }
@@ -144,7 +143,7 @@ void TxT::purgeSpecialCharacters(){
             // Clear
             bad.clear();
         }
-        */
+        
     }
 }
 
@@ -193,7 +192,10 @@ void TxT::purgeLittleWords(){
 
     for(i=0; i<_w.size(); ++i){
         txt = &_w[i].text;
-        if( txt->size()<3 ){
+        if( txt->size()<2 ){
+            _blacklist.push_back(i);
+        } 
+        if( txt->size()>15 ){
             _blacklist.push_back(i);
         } 
     }
@@ -212,7 +214,7 @@ void TxT::runPurge(){
     this->purgeUppercase        ();
 
     // Sorting blacklist
-    std::sort (_blacklist.begin(), _blacklist.end());
+    std::sort ( _blacklist.begin(), _blacklist.end() );
 
     // Execute purge D:!
     for( unsigned i=0; i<_blacklist.size(); ++i){

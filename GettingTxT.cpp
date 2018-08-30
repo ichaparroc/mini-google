@@ -1,15 +1,10 @@
 #include "GettingTxT.h"
-String SpecialCharacters = ",;.():_-+*\"='¸[]|{}°$%¿?¡!/-\t()«»=º`.~@#'.().&()¨?´-ª'-¨()";
+String SpecialCharacters = ",;.():_-+*\"='[]|{}¿?¡!/«»~@#&";
 
 /*
  * Constructors
  */
 GettingTxT::GettingTxT(String pathTo): _pathTo(pathTo){
-    //setlocale(LC_ALL, "");
-    /*
-    _file.imbue( std::locale( _file.getloc(), 
-                 new std::codecvt_utf8_utf16< wchar_t, 1114111UL, std::consume_header> ) );
-                 */
 }
 
 
@@ -20,8 +15,6 @@ GettingTxT::GettingTxT(String pathTo): _pathTo(pathTo){
 void GettingTxT::createFiles(){
     std::vector<std::string> files;
     std::string line;
-
-    //setlocale(LC_ALL, "");
 
     getdir(_pathTo,files);
 
@@ -47,8 +40,6 @@ void GettingTxT::createFiles(){
 void GettingTxT::analyzeArticles(){
     std::vector<std::string> files;
     std::string line;
-
-    //setlocale(LC_ALL, "");
 
     getdir(_pathTo,files);
 
@@ -230,6 +221,29 @@ void GettingTxT::feedTrie( radix_trie_node &tree ){
 
 }
 */
+void GettingTxT::feedTrie( String pathTo ){
+    uint  id;
+    Words _w;
+    
+    std::cout << "Execute Feed Trie!" << std::endl;
+
+    std::ofstream myfile (pathTo);
+    if (myfile.is_open()){
+        for(unsigned a = 0; a < _articles.size(); ++a){
+            _w = _articles[a].getWords();
+            id = _articles[a].getDocumentID();
+
+            std::cout << "\t - " << a+1 <<  " de " << _articles.size() << std::endl;
+
+            for( unsigned i = 0; i< _w.size(); ++i){
+                myfile << _w[i].text  << "\t";
+                myfile <<     id      << "\t";
+                myfile << _w[i].value << "\n";
+            }
+        }
+    }
+    else std::cout << "Unable to open file" << std::endl;
+}
 
 
 /*
@@ -242,7 +256,8 @@ void GettingTxT::histogram(){
     std::vector<String>::iterator it;
     uint sizeArt;
     uint     idx;
-    Words     _w;  
+    Words     _w; 
+    double value;
 
     std::cout << "Execute Histogram!" << std::endl;
 
@@ -255,15 +270,20 @@ void GettingTxT::histogram(){
         for( unsigned i=0; i<_w.size(); ++i){
             it = find (wordList.begin(), wordList.end(), _w[i].text);
 
+            // Value
+            value = _w[i].value;
+            if( value < 1.0 ) value = ceil(  value      * ((double)sizeArt) );
+            else              value = ceil( (value - 1) * ((double)sizeArt) );
+
             // Palabra nueva
             if(it == wordList.end()){
                 wordList .push_back( _w[i].text );
-                wordCount.push_back( (uint)(_w[i].value * (double)sizeArt) ); 
+                wordCount.push_back( ((uint)value) ); 
             }
             // No es palabra nueva: Actualizar!
             else{
                 idx = it - wordList.begin();
-                wordCount[idx] += (uint)(_w[i].value * (double)sizeArt);
+                wordCount[idx] += ((uint)value);
             }
         }
     }
