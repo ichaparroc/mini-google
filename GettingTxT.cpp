@@ -140,6 +140,12 @@ bool GettingTxT::getArticles(){
 bool GettingTxT::isEndOfArticle( std::string &line ){
     getline(_file,line);
 
+/*
+    Véase también.
+    Bibliografía.
+    Enlaces externos.
+     Referencias .
+*/
     // Find the end
     if( line.size() < 16 ){
     if( line.find("ENDOFARTICLE") == 0 ){
@@ -185,6 +191,7 @@ bool GettingTxT::createArticleFiles(){
 
     // Create file
     std::ofstream outfile ("database/"+id+".txt");
+    cureString(title);
     outfile << title << std::endl;
 
     //
@@ -195,7 +202,10 @@ bool GettingTxT::createArticleFiles(){
     // Line per line
     while( !isEndOfArticle( line ) ){
         isgood = true;
-        if( line.size()>0 ) outfile << line << std::endl;
+        if( line.size()>0 ){
+            cureString(line);
+            outfile << line << std::endl;
+        } 
     }
 
     outfile.close();

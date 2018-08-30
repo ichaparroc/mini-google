@@ -4,9 +4,10 @@ int main(int argc, char const *argv[]){
 	String pathTo = "/home/victor/Documentos/Algoritmos/Project2/raw.test";
 
 	GettingTxT a = GettingTxT(pathTo);
-	a.analyzeArticles();
+	a.createFiles();
+	//a.analyzeArticles();
 	//a.feedTrie("foodForTrie.txt");
-	a.histogram();
+	//a.histogram();
 
 	return 0;
 }

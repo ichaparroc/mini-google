@@ -61,7 +61,7 @@ class radix_trie_index
 	}
 };
 
-
+// RadixTrie
 class radix_trie_node
 {
 	public:
