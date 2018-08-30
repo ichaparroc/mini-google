@@ -1,5 +1,5 @@
 #include "GettingTxT.h"
-String SpecialCharacters = ",;.():_-+*";
+String SpecialCharacters = ",;.():_-+*\"='¸[]|{}°$%¿?¡!/-\t()«»=º`.~@#'.().&()¨?´-ª'-¨()";
 
 /*
  * Constructors
@@ -240,13 +240,17 @@ void GettingTxT::histogram(){
     std::vector<String> wordList;
     std::vector< uint > wordCount;
     std::vector<String>::iterator it;
-    uint sizeArticle;
-    uint         idx;
-    Words         _w;  
+    uint sizeArt;
+    uint     idx;
+    Words     _w;  
+
+    std::cout << "Execute Histogram!" << std::endl;
 
     for ( unsigned a=0; a<_articles.size(); ++a){
-        sizeArticle = _articles[a].getSize();
-        _w          = _articles[a].getWords();
+        sizeArt = _articles[a].getSize();
+        _w      = _articles[a].getWords();
+
+        std::cout << "\t - " << a <<  " de " << _articles.size() << std::endl;
 
         for( unsigned i=0; i<_w.size(); ++i){
             it = find (wordList.begin(), wordList.end(), _w[i].text);
@@ -254,12 +258,12 @@ void GettingTxT::histogram(){
             // Palabra nueva
             if(it == wordList.end()){
                 wordList .push_back( _w[i].text );
-                wordCount.push_back( (uint)(_w[i].value * (double)sizeArticle) ); 
+                wordCount.push_back( (uint)(_w[i].value * (double)sizeArt) ); 
             }
             // No es palabra nueva: Actualizar!
             else{
                 idx = it - wordList.begin();
-                wordCount[idx] += (uint)(_w[i].value * (double)sizeArticle);
+                wordCount[idx] += (uint)(_w[i].value * (double)sizeArt);
             }
         }
     }
