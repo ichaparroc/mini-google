@@ -261,6 +261,7 @@ void GettingTxT::histogram(){
 
     std::cout << "Execute Histogram!" << std::endl;
 
+    // Calculate
     for ( unsigned a=0; a<_articles.size(); ++a){
         sizeArt = _articles[a].getSize();
         _w      = _articles[a].getWords();
@@ -287,7 +288,20 @@ void GettingTxT::histogram(){
             }
         }
     }
+    
+    // Zip the vectors together
+    std::vector< std::pair<String,uint> > zipped;
+    zip(wordList, wordCount, zipped);
+    /*
+    // Sort the vector of pairs
+    std::sort(std::begin(zipped), std::end(zipped), [&](const auto& a, const auto& b){
+                                                        return a.second > b.second;
+                                                    });
 
+    // Write the sorted pairs back to the original vectors
+    unzip(zipped, wordList, wordCount);
+    */
+    // Save
     std::ofstream myfile ("histoWords.txt");
     if (myfile.is_open()){
         

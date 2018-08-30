@@ -23,6 +23,7 @@ bool isKeyOfMap(String &key, Dict &_map){
       return false;
 }
 
+
 uint findWord(Words &_words, String *_word){
     String *t;
     uint i;
@@ -39,8 +40,28 @@ uint findWord(Words &_words, String *_word){
      return _words.size();
 }
 
+
 void removeCharsFromString( String &str, String &charsToRemove ){
     for ( unsigned int i = 0; i < charsToRemove.size(); ++i ) {
       str.erase( remove(str.begin(), str.end(), charsToRemove[i]), str.end() );
    }
+}
+
+
+template <typename A, typename B>
+void zip(const std::vector<A> &a, const std::vector<B> &b, 
+               std::vector<std::pair<A,B>> &zipped){
+    for(size_t i=0; i<a.size(); ++i){
+        zipped.push_back(std::make_pair(a[i], b[i]));
+    }
+}
+
+
+template <typename A, typename B>
+void unzip(const std::vector<std::pair<A, B>> &zipped, 
+           std::vector<A> &a, std::vector<B> &b){
+    for(size_t i=0; i<a.size(); i++){
+        a[i] = zipped[i].first;
+        b[i] = zipped[i].second;
+    }
 }
